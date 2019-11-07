@@ -1,4 +1,14 @@
-## Huutokauppa
+# Huutokauppa
+
+## Osan 1 etapit
+
+* [Linkki Herokuun](http://tsoha-demo-hannu.herokuapp.com/)
+* [Linkki GitHubiin](https://github.com/hannuorn/tsoha-osa1)
+
+
+## Osan 0 etapit
+
+### Aiheen valinta
 
 Yksinkertaisen nettihuutokaupan toteuttava tietokantasovellus. Käyttäjä luo ensin
 itselleen tunnuksen, minkä jälkeen hän voi ilmoittaa tavaraa myytäväksi huutokaupassa
