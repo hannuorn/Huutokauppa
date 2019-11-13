@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Auction</th>
+    </tr>
+    {% for auction in auctions %}
+    <tr>
+      <td><a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
