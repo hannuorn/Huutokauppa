@@ -1,6 +1,6 @@
 # Huutokauppa
 
-[Huutokauppasovellus Herokussa](https://hhuutokauppa.herokuapp.com/)]
+[Huutokauppasovellus Herokussa](https://hhuutokauppa.herokuapp.com/)
 
 
 ## Osan 1 etapit
