@@ -2,7 +2,10 @@ from application import app, db
 from flask import redirect, render_template, request, url_for
 from application.auctions.models import Auction
 
-
+@app.route("/")
+def rootpage():
+    return redirect(url_for("auctions_index"))
+    
 @app.route("/auctions", methods=["GET"])
 def auctions_index():
     return render_template("auctions/list.html", auctions = Auction.query.all())
