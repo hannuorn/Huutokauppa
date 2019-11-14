@@ -5,7 +5,8 @@ class Auction(db.Model):
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 #    date_ends = db.Column(db.DateTime())
     title = db.Column(db.String(40), nullable=False)
-#    description = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    lahtohinta = db.Column(db.Integer())
 
     def __init__(self, title):
         self.title = title

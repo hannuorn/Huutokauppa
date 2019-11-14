@@ -1,8 +1,59 @@
 {% extends "layout.html" %}
   
 {% block body %}
+
 <form method="POST" action="{{ url_for('auctions_create') }}">
-  <input type="text" name="name"/>
-  <input type="submit" value="Add a new auction"/>
+    <table>
+        <tr>
+            <td>
+                {{ form.title.label }}
+            </td>
+            <td>
+                {{ form.title }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.title.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.description.label }}            
+            </td>
+            <td>
+                {{ form.description }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.description.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.lahtohinta.label }}
+            </td>
+            <td>
+                {{ form.lahtohinta }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.lahtohinta.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Add a new auction"/>
+            </td>
+        </tr>
 </form>
+
 {% endblock %}
