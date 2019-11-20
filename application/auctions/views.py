@@ -1,5 +1,7 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
+from flask_login import login_required
+
 from application.auctions.models import Auction
 from application.auctions.forms import AuctionForm
 
@@ -24,11 +26,13 @@ def auctions_view(auction_id):
 
 
 @app.route("/auctions/new/")
+@login_required
 def auctions_form():
     return render_template("auctions/new.html", form = AuctionForm())
 
 
 @app.route("/auctions/", methods=["POST"])
+@login_required
 def auctions_create():
     form = AuctionForm(request.form)
 
@@ -38,8 +42,8 @@ def auctions_create():
     a = Auction(form.title.data)
     a.description = form.description.data
     a.lahtohinta = form.lahtohinta.data
-    
+
     db.session().add(a)
     db.session().commit()
-  
+
     return redirect(url_for("auctions_index"))
