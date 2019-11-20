@@ -2,8 +2,16 @@
 
 {% block body %}
 <span style='color: red'>{{ error }}</span>
-<form method="POST" action="{{ url_for('auth_login') }}">
+<form method="POST" action="{{ url_for('auth_signup') }}">
   <table>
+    <tr>
+      <td>
+	{{ form.fullname.label }}
+      </td>
+      <td>
+	{{ form.fullname }}
+      </td>
+    </tr>
     <tr>
       <td>
 	{{ form.username.label }}
@@ -21,11 +29,18 @@
       </td>
     </tr>
     <tr>
+      <td>
+	{{ form.password_repeated.label }}
+      </td>
+      <td>
+	{{ form.password_repeated }}
+      </td>
+    </tr>
+    <tr>
       <td colspan="2">
-	<input type="submit" value="Login"/>
+	<input type="submit" value="Sign up"/>
       </td>
     </tr>
 </form>
-New user? <a href="{{ url_for('auth_signup') }}">Sign up</a> here
 <p>
 {% endblock %}
