@@ -1,9 +1,10 @@
 from application import db
+from application.models import Base
 
-class Auction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-#    date_ends = db.Column(db.DateTime())
+
+class Auction(Base):
+
+    date_ends = db.Column(db.DateTime, default=db.func.current_timestamp())
     title = db.Column(db.String(40), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     lahtohinta = db.Column(db.Integer())
