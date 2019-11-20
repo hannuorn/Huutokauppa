@@ -8,6 +8,9 @@ class Auction(db.Model):
     description = db.Column(db.String(200), nullable=False)
     lahtohinta = db.Column(db.Integer())
 
+    account_id = db.Column(db.Integer, db.ForeignKey('account.id'),
+                           nullable=False)
+
     def __init__(self, title):
         self.title = title
 
