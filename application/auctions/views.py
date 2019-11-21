@@ -33,17 +33,25 @@ def auctions_view(auction_id):
             highest_bid = Bid.highest_bid(auction_id),
             auction = Auction.query.get(auction_id))
 
-    form = BiddingForm(request.form)
     highest_bid = Bid.highest_bid(auction_id)
 
-    if highest_bid >= form.amount.data:
-        error = "You must bid more."
+    form = BiddingForm(request.form)
+    if not form.validate():
         return render_template("auctions/view.html", 
-                form = BiddingForm(),
+            form = form,
+            bids = Bid.find_bids(auction_id),
+            highest_bid = Bid.highest_bid(auction_id),
+            auction = Auction.query.get(auction_id))
+
+
+    if highest_bid >= form.amount.data:
+        biderror = "You must bid more."
+        return render_template("auctions/view.html", 
+                form = form,
                 bids = Bid.find_bids(auction_id),
                 highest_bid = Bid.highest_bid(auction_id),
                 auction = Auction.query.get(auction_id),
-                error = error)
+                biderror = biderror)
 
     b = Bid(auction_id, current_user.id, form.amount.data)
 

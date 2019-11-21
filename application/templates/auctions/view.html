@@ -23,8 +23,8 @@ created = {{ auction.date_created }}<br>
             </td>
             <td>
                 <ul>
-                    {% for err in form.amount.errors %}
-                    <li>{{ err }}</li>
+                    {% for error in form.amount.errors %}
+                    <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             </td>
@@ -34,7 +34,7 @@ created = {{ auction.date_created }}<br>
                 <input type="submit" value="Place bid"/>
             </td>
             <td>
-                <span style='color: red'>{{ error }}</span>
+                <span style='color: red'>{{ biderror }}</span>
             </td>
         </tr>
     </table>
