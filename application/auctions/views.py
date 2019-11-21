@@ -22,20 +22,16 @@ def auctions_index_slash():
     return redirect(url_for("auctions_index"))
 
 
-@app.route("/auctions/<auction_id>/", methods=["GET"])
+@app.route("/auctions/<auction_id>/", methods=["GET", "POST"])
 @login_required
 def auctions_view(auction_id):
 
-    return render_template("auctions/view.html", 
+    if request.method == "GET":
+        return render_template("auctions/view.html", 
             form = BiddingForm(),
             bids = Bid.find_bids(auction_id),
             highest_bid = Bid.highest_bid(auction_id),
-            auction = Auction.query.get(auction_id), error = "")
-
-
-@app.route("/auctions/<auction_id>/", methods=["POST"])
-@login_required
-def auctions_bid(auction_id):
+            auction = Auction.query.get(auction_id))
 
     form = BiddingForm(request.form)
     highest_bid = Bid.highest_bid(auction_id)

@@ -36,11 +36,13 @@ class Bid(Base):
 
     @staticmethod
     def highest_bid(auction_id):
-        stmt = text("SELECT MAX(bid.amount) FROM bid;")
+        stmt = text("SELECT MAX(bid.amount) FROM bid"
+                    " WHERE (bid.auction_id = :auction_id);").params(
+                        auction_id = auction_id)
         res = db.engine.execute(stmt)
         response = 0
         for row in res:
-            if row[0] > response:
+            if type(row[0]) == int:
                 response = row[0]
 
         return response
