@@ -36,14 +36,14 @@
         </tr>
         <tr>
             <td>
-                {{ form.lahtohinta.label }}
+                {{ form.minimum_bid.label }}
             </td>
             <td>
-                {{ form.lahtohinta }}
+                {{ form.minimum_bid }}
             </td>
             <td>
                 <ul>
-                    {% for error in form.lahtohinta.errors %}
+                    {% for error in form.minimum_bid.errors %}
                     <li>{{ error }}</li>
                     {% endfor %}
                 </ul>

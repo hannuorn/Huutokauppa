@@ -7,7 +7,7 @@ class Auction(Base):
     date_ends = db.Column(db.DateTime, default=db.func.current_timestamp())
     title = db.Column(db.String(40), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    lahtohinta = db.Column(db.Integer())
+    minimum_bid = db.Column(db.Integer())
 
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'),
                            nullable=False)

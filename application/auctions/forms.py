@@ -4,7 +4,7 @@ from wtforms import StringField, IntegerField, validators
 class AuctionForm(FlaskForm):
     title = StringField("Title", [validators.Length(min=5)])
     description = StringField("Description", [validators.Length(min=5)])
-    lahtohinta = IntegerField("Minimum bid")
+    minimum_bid = IntegerField("Minimum bid")
 
     class Meta:
         csrf = False

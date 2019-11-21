@@ -26,12 +26,13 @@ def auctions_index_slash():
 @login_required
 def auctions_view(auction_id):
 
+    a = Auction.query.get(auction_id)
     if request.method == "GET":
         return render_template("auctions/view.html", 
             form = BiddingForm(),
             bids = Bid.find_bids(auction_id),
             highest_bid = Bid.highest_bid(auction_id),
-            auction = Auction.query.get(auction_id))
+            auction = a)
 
     highest_bid = Bid.highest_bid(auction_id)
 
@@ -41,16 +42,25 @@ def auctions_view(auction_id):
             form = form,
             bids = Bid.find_bids(auction_id),
             highest_bid = Bid.highest_bid(auction_id),
-            auction = Auction.query.get(auction_id))
+            auction = a)
 
-
-    if highest_bid >= form.amount.data:
-        biderror = "You must bid more."
+    if a.minimum_bid > form.amount.data:
+        biderror = "You must bid at least the minimum bid."
         return render_template("auctions/view.html", 
                 form = form,
                 bids = Bid.find_bids(auction_id),
                 highest_bid = Bid.highest_bid(auction_id),
-                auction = Auction.query.get(auction_id),
+                auction = a,
+                biderror = biderror)
+
+
+    if highest_bid >= form.amount.data:
+        biderror = "You must bid more than the current highest bid."
+        return render_template("auctions/view.html", 
+                form = form,
+                bids = Bid.find_bids(auction_id),
+                highest_bid = Bid.highest_bid(auction_id),
+                auction = a,
                 biderror = biderror)
 
     b = Bid(auction_id, current_user.id, form.amount.data)
@@ -62,7 +72,7 @@ def auctions_view(auction_id):
             form = BiddingForm(),
             bids = Bid.find_bids(auction_id),
             highest_bid = Bid.highest_bid(auction_id),
-            auction = Auction.query.get(auction_id))
+            auction = a)
 
 
 @app.route("/auctions/new/")
@@ -81,7 +91,7 @@ def auctions_create():
 
     a = Auction(form.title.data)
     a.description = form.description.data
-    a.lahtohinta = form.lahtohinta.data
+    a.minimum_bid = form.minimum_bid.data
     a.account_id = current_user.id
 
     db.session().add(a)
