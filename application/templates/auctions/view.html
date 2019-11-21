@@ -8,6 +8,50 @@ id = {{ auction.id }}<br>
 title = {{ auction.title }}<br>
 description = {{ auction.description }}<br>
 lahtohinta = {{ auction.lahtohinta }}<br>
-created = {{ auction.date_created }}
+created = {{ auction.date_created }}<br>
+<b>Highest bid = {{ highest_bid }}</b><br>
+<p/>
 
+<form method="POST" action="{{ url_for('auctions_index') }}/{{ auction.id }}/">
+    <table>
+        <tr>
+            <td>
+                {{ form.amount.label }}
+            </td>
+            <td>
+                {{ form.amount }}
+            </td>
+            <td>
+                <ul>
+                    {% for err in form.amount.errors %}
+                    <li>{{ err }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Place bid"/>
+            </td>
+            <td>
+                <span style='color: red'>{{ error }}</span>
+            </td>
+        </tr>
+    </table>
+</form>
+<p/>
+<table>
+    <tr>
+        <th>Amount</th>
+        <th>Bidder</th>
+        <th>Date</th>
+    </tr>
+    {% for bid in bids %}
+    <tr>
+        <td>{{ bid.amount }}</td>
+        <td>{{ bid.bidder }}</td>
+        <td>{{ bid.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

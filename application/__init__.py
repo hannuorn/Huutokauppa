@@ -22,6 +22,8 @@ from application.auctions import views
 from application.auth import models
 from application.auth import views
 
+from application.bids import models
+
 
 # login
 
