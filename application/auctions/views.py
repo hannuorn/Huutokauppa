@@ -14,7 +14,8 @@ def rootpage():
 
 @app.route("/auctions", methods=["GET"])
 def auctions_index():
-    return render_template("auctions/list.html", auctions = Auction.query.all())
+    return render_template("auctions/list.html",
+            auctions = Auction.find_auctions_with_highest_bid())
 
 
 @app.route("/auctions/", methods=["GET"])
