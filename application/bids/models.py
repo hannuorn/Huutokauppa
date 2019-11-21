@@ -40,6 +40,7 @@ class Bid(Base):
         res = db.engine.execute(stmt)
         response = 0
         for row in res:
-            response = row[0]
+            if row[0] > response:
+                response = row[0]
 
         return response
