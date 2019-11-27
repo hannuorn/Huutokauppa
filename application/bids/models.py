@@ -53,7 +53,7 @@ class Bid(Base):
 
         stmt = text("SELECT account.name, bid.amount"
                 " FROM account JOIN bid ON bid.account_id = account.id"
-                " WHERE ((bid.auction_id = auction_id) AND (bid.amount ="
+                " WHERE ((bid.auction_id = :auction_id) AND (bid.amount ="
                 " (SELECT MAX(bid.amount) FROM bid"
                    " WHERE bid.auction_id = :auction_id)));").params(
                         auction_id = auction_id)
