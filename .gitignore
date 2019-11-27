@@ -137,3 +137,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Visual Studio code
+.vscode/
+
+# Files opened in editors
+*.swp
