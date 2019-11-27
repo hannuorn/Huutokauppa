@@ -2,15 +2,69 @@
 
 {% block body %}
 
-<b>Auction details</b>
-<br>
-id = {{ auction.id }}<br>
-title = {{ auction.title }}<br>
-description = {{ auction.description }}<br>
-minimum_bid = {{ auction.minimum_bid }}<br>
-created = {{ auction.date_created }}<br>
-<p/>
-<b>Highest bid = {{ highest_bid }}</b><br>
+<table>
+    <tr>
+        <td colspan="2">
+            <b>Auction details</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Title
+        </td>
+        <td>
+            {{ auction.title }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Description
+        </td>
+        <td>
+            {{ auction.description }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Created
+        </td>
+        <td>
+            {{ auction.date_created }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Seller
+        </td>
+        <td>
+            {{ seller }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Minimum bid
+        </td>
+        <td>
+            {{ auction.minimum_bid }}
+        </td>
+    </tr>
+    <tr>
+
+    </tr>
+    <tr>
+        <td>
+            Winning bid
+        </td>
+        <td>
+            {% if highest_bid.amount == 0 %}
+            no bids
+            {% else %}
+            <b>{{ highest_bid.amount }}</b> by <i>{{ highest_bid.bidder }}</i>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
 <p/>
 
 <form method="POST" action="{{ url_for('auctions_index') }}/{{ auction.id }}/">

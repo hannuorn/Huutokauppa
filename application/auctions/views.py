@@ -6,6 +6,7 @@ from application.auctions.models import Auction
 from application.auctions.forms import AuctionForm
 from application.auctions.forms import BiddingForm
 from application.bids.models import Bid
+from application.auth.models import User
 
 
 @app.route("/")
@@ -27,40 +28,58 @@ def auctions_index_slash():
 @login_required
 def auctions_view(auction_id):
 
-    a = Auction.query.get(auction_id)
-    if request.method == "GET":
-        return render_template("auctions/view.html", 
-            form = BiddingForm(),
-            bids = Bid.find_bids(auction_id),
-            highest_bid = Bid.highest_bid(auction_id),
-            auction = a)
+    html_file = "auctions/view.html"
 
+    a = Auction.query.get(auction_id)
+    seller = User.get_name(a.account_id)
+    bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
+
+    if request.method == "GET":
+        return render_template(html_file, 
+            form = BiddingForm(),
+            seller = seller,
+            bids = bids,
+            highest_bid = highest_bid,
+            auction = a)
 
     form = BiddingForm(request.form)
     if not form.validate():
-        return render_template("auctions/view.html", 
+        return render_template(html_file, 
             form = form,
-            bids = Bid.find_bids(auction_id),
-            highest_bid = Bid.highest_bid(auction_id),
+            seller = seller,
+            bids = bids,
+            highest_bid = highest_bid,
             auction = a)
+
+    if current_user.id == a.account_id:
+        biderror = "You can not bid in your own auction."
+        return render_template(html_file, 
+                form = form,
+                seller = seller,
+                bids = bids,
+                highest_bid = highest_bid,
+                auction = a,
+                biderror = biderror)
 
     if a.minimum_bid > form.amount.data:
         biderror = "You must bid at least the minimum bid."
-        return render_template("auctions/view.html", 
+        return render_template(html_file, 
                 form = form,
-                bids = Bid.find_bids(auction_id),
-                highest_bid = Bid.highest_bid(auction_id),
+                seller = seller,
+                bids = bids,
+                highest_bid = highest_bid,
                 auction = a,
                 biderror = biderror)
 
 
-    if highest_bid >= form.amount.data:
+    if highest_bid.get("amount") >= form.amount.data:
         biderror = "You must bid more than the current highest bid."
-        return render_template("auctions/view.html", 
+        return render_template(html_file, 
                 form = form,
-                bids = Bid.find_bids(auction_id),
-                highest_bid = Bid.highest_bid(auction_id),
+                seller = seller,
+                bids = bids,
+                highest_bid = highest_bid,
                 auction = a,
                 biderror = biderror)
 
@@ -69,10 +88,14 @@ def auctions_view(auction_id):
     db.session().add(b)
     db.session().commit()
 
-    return render_template("auctions/view.html", 
-            form = BiddingForm(),
-            bids = Bid.find_bids(auction_id),
-            highest_bid = Bid.highest_bid(auction_id),
+    bids = Bid.find_bids(auction_id)
+    highest_bid = Bid.highest_bid(auction_id)
+
+    return render_template(html_file, 
+            form = form,
+            seller = seller,
+            bids = bids,
+            highest_bid = highest_bid,
             auction = a)
 
 

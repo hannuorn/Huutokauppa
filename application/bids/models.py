@@ -35,14 +35,28 @@ class Bid(Base):
 
 
     @staticmethod
+    def find_bidder(bid_id):
+        stmt = text("SELECT account.name FROM account"
+                    " JOIN bid ON bid.account_id = account.id"
+                    " WHERE (bid.id = :bid_id);").params(
+                        bid_id = bid_id)
+        res = db.engine.execute(stmt)
+        for row in res:
+            return row[0]
+
+
+    @staticmethod
     def highest_bid(auction_id):
-        stmt = text("SELECT MAX(bid.amount) FROM bid"
+        stmt = text("SELECT MAX(bid.amount), bid.id FROM bid"
                     " WHERE (bid.auction_id = :auction_id);").params(
                         auction_id = auction_id)
         res = db.engine.execute(stmt)
-        response = 0
+        highest_bid = 0
+        highest_bidder = ""
         for row in res:
             if type(row[0]) == int:
-                response = row[0]
+                highest_bid = row[0]
+                highest_bid_id = row[1]
+                highest_bidder = Bid.find_bidder(highest_bid_id)
 
-        return response
+        return {"amount":highest_bid, "bidder":highest_bidder}
