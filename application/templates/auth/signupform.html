@@ -3,44 +3,77 @@
 {% block body %}
 <span style='color: red'>{{ error }}</span>
 <form method="POST" action="{{ url_for('auth_signup') }}">
-  <table>
-    <tr>
-      <td>
-	{{ form.fullname.label }}
-      </td>
-      <td>
-	{{ form.fullname }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-	{{ form.username.label }}
-      </td>
-      <td>
-	{{ form.username }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-	{{ form.password.label }}
-      </td>
-      <td>
-	{{ form.password }}
-      </td>
-    </tr>
-    <tr>
-      <td>
-	{{ form.password_repeated.label }}
-      </td>
-      <td>
-	{{ form.password_repeated }}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<input type="submit" value="Sign up"/>
-      </td>
-    </tr>
+    <table>
+        <tr>
+            <td>
+                {{ form.fullname.label }}
+            </td>
+            <td>
+                {{ form.fullname }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.fullname.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                {{ form.username.label }}
+            </td>
+            <td>
+                {{ form.username }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.username.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                {{ form.password.label }}
+            </td>
+            <td>
+                {{ form.password }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.password.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                {{ form.password_repeated.label }}
+            </td>
+            <td>
+                {{ form.password_repeated }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.password_repeated.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            	<input type="submit" value="Sign up"/>
+            </td>
+        </tr>
+    </table>
 </form>
+
 <p>
 {% endblock %}
