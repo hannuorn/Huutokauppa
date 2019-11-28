@@ -24,6 +24,8 @@ varten.
 * Huutokauppa((pk) id:Integer, otsikko:String, kuvaus:String, (fk) myyja -> Kayttaja, lahtohinta:Integer, sulkeutumisaika:Date)
 * Huuto((fk) huutokauppa -> Huutokauppa, (fk) huutaja -> Kayttaja, maara:Integer)
 
+![Tietokantakaavio]({{ "tietokantakaavio.png" }})
+
 
 ### Mahdollisia kehittyneempiä toimintoja
 
