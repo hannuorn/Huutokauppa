@@ -1,20 +1,20 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <table>
+<table>
     <tr>
-      <th>Auction</th>
-      <th>Highest bid</th>
+        <th>Auction</th>
+        <th>Highest bid</th>
     </tr>
     {% for auction in auctions %}
     <tr>
-      <td>
-        <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
-      </td>
-      <td>
-        {{ auction.highest_bid }}
-      </td>
+        <td>
+            <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
+        </td>
+        <td>
+            {{ auction.highest_bid }}
+        </td>
     </tr>
     {% endfor %}
-  </table>
+</table>
 {% endblock %}

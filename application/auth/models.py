@@ -8,11 +8,21 @@ class User(Base):
 
     __tablename__ = "account"
 
-    name = db.Column(db.String(144), nullable=False)
-    username = db.Column(db.String(144), nullable=False, unique=True)
-    password = db.Column(db.String(144), nullable=False)
+    name = db.Column(
+            db.String(144),
+            nullable = False)
 
-    auctions = db.relationship("Auction", backref='account', lazy=True)
+    username = db.Column(
+            db.String(144),
+            nullable = False,
+            unique = True)
+
+    password = db.Column(
+            db.String(144),
+            nullable = False)
+
+    auctions = db.relationship("Auction", backref = 'account', lazy = True)
+
 
     def __init__(self, name, username, password):
         self.name = name
@@ -30,7 +40,6 @@ class User(Base):
 
     def is_authenticated(self):
         return True
-
 
 
     @staticmethod
