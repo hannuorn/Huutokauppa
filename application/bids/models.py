@@ -27,7 +27,7 @@ class Bid(Base):
 
     @staticmethod
     def find_bids(auction_id):
-        stmt = text("SELECT bid.amount, account.username, bid.date_created"
+        stmt = text("SELECT bid.amount, account.name, bid.date_created"
                     " FROM bid"
                     " JOIN account ON bid.account_id = account.id"
                     " WHERE (bid.auction_id = :auction_id)"
