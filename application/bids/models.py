@@ -6,11 +6,19 @@ from sqlalchemy.sql import text
 
 class Bid(Base):
 
-    auction_id = db.Column(db.Integer, db.ForeignKey('auction.id'),
-                           nullable=False)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'),
-                           nullable=False)
-    amount = db.Column(db.Integer())
+    auction_id = db.Column(
+            db.Integer,
+            db.ForeignKey('auction.id'),
+            nullable = False)
+
+    account_id = db.Column(
+            db.Integer,
+            db.ForeignKey('account.id'),
+            nullable = False)
+
+    amount = db.Column(
+            db.Integer,
+            nullable = False)
 
     def __init__(self, auction_id, account_id, amount):
         self.auction_id = auction_id
