@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 
-from application import app, db
+from application import app, db, login_required
 from application.auth.models import User
 from application.auth.forms import LoginForm, SignupForm
 from application.auctions.models import Auction
@@ -16,21 +16,21 @@ def auth_login():
 
     form = LoginForm(request.form)
 
-    # mahdolliset validoinnit
-
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+    user = User.query.filter_by(
+            username = form.username.data,
+            password = form.password.data).first()
     if not user:
         return render_template("auth/loginform.html", form = form,
                                error = "No such username or password")
 
     login_user(user)
-    return redirect(url_for("index"))
+    return redirect(url_for("auctions_index"))
 
 
 @app.route("/auth/logout")
 def auth_logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("auctions_index"))
 
 
 @app.route("/auth/signup", methods = ["GET", "POST"])
@@ -63,10 +63,11 @@ def auth_signup():
     user = User.query.filter_by(username=form.username.data).first()
     login_user(user)
 
-    return redirect(url_for("index"))
+    return redirect(url_for("auctions_index"))
 
 
 @app.route("/auth/account", methods = ["GET"])
+@login_required(role = "ANY")
 def auth_account():
     return render_template(
             "auth/view.html",
