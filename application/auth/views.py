@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 
 from application import app, db
 from application.auth.models import User
@@ -62,3 +62,10 @@ def auth_signup():
     login_user(user)
 
     return redirect(url_for("index"))
+
+
+@app.route("/auth/account", methods = ["GET"])
+def auth_account():
+    return render_template(
+            "auth/view.html",
+            user = current_user)

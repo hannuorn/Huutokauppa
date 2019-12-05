@@ -26,3 +26,4 @@ class SignupForm(FlaskForm):
 
     class Meta:
         csrf = False
+

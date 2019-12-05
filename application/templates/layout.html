@@ -42,7 +42,7 @@
             {{ current_user.name }}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelleby="user-dropdown">
-            <a class="dropdown-item" href="{{ url_for('auth_logout') }}">My account</a>
+            <a class="dropdown-item" href="{{ url_for('auth_account') }}">My account</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ url_for('auth_logout') }}">Logout</a>
           </div>
