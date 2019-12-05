@@ -41,6 +41,12 @@ class User(Base):
     def is_authenticated(self):
         return True
 
+    def roles(self):
+        if self.username == "admin":
+            return ["ADMIN"]
+        else:
+            return []
+
 
     @staticmethod
     def get_name(user_id):

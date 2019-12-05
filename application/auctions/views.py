@@ -1,6 +1,6 @@
-from application import app, db
+from application import app, db, login_required
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
 
 from application.auctions.models import Auction
 from application.auctions.forms import AuctionForm
@@ -25,7 +25,7 @@ def auctions_index_slash():
 
 
 @app.route("/auctions/<auction_id>/", methods=["GET", "POST"])
-@login_required
+@login_required(role = "ANY")
 def auctions_view(auction_id):
 
     html_file = "auctions/view.html"
@@ -100,13 +100,13 @@ def auctions_view(auction_id):
 
 
 @app.route("/auctions/new/")
-@login_required
+@login_required(role = "ANY")
 def auctions_form():
     return render_template("auctions/new.html", form = AuctionForm())
 
 
 @app.route("/auctions/", methods=["POST"])
-@login_required
+@login_required(role = "ANY")
 def auctions_create():
     form = AuctionForm(request.form)
 
