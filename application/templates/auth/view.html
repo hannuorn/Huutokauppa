@@ -52,5 +52,26 @@
     </tr>
     {% endfor %}
 </table>
+<p/>
+<br/>
+
+<h3>My bids</h3>
+
+<table>
+    <tr>
+        <th>Auction</th>
+        <th>My bid</th>
+    </tr>
+    {% for auction in bids %}
+    <tr>
+        <td>
+            <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
+        </td>
+        <td>
+            {{ auction.my_bid }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

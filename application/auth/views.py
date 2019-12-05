@@ -5,6 +5,7 @@ from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, SignupForm
 from application.auctions.models import Auction
+from application.bids.models import Bid
 
 
 @app.route("/auth/login", methods = ["GET", "POST"])
@@ -70,4 +71,5 @@ def auth_account():
     return render_template(
             "auth/view.html",
             user = current_user,
-            auctions = Auction.find_users_auctions(current_user.id))
+            auctions = Auction.find_users_auctions(current_user.id),
+            bids = Bid.find_users_bids(current_user.id))

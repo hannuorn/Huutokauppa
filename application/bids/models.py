@@ -75,3 +75,29 @@ class Bid(Base):
             highest_bid = row[1]
 
         return {"amount":highest_bid, "bidder":highest_bidder}
+
+
+    @staticmethod
+    def find_users_bids(account_id):
+
+        stmt = text(
+                "SELECT auction.id, auction.title, MAX(bid.amount)"
+                " FROM auction JOIN bid ON bid.auction_id = auction.id"
+                " WHERE bid.account_id = :account_id"
+                " GROUP BY auction.id;").params(
+                        account_id = account_id)
+        res = db.engine.execute(stmt)
+
+        response = []
+        for row in res:
+            hb = 0
+            if type(row[2]) == int:
+                hb = row[2]
+
+            response.append({
+                    "id":row[0],
+                    "title":row[1],
+                    "my_bid":hb})
+
+        return response
+        
