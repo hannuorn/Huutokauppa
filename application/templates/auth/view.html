@@ -2,12 +2,9 @@
 
 {% block body %}
 
+<h3>My account</h3>
+
 <table>
-    <tr>
-        <td colspan="2">
-            <b>Account details</b>
-        </td>
-    </tr>
     <tr>
         <td>
             Name
@@ -32,6 +29,28 @@
             {{ user.date_created }}
         </td>
     </tr>
+</table>
+
+<p/>
+<br/>
+
+<h3>My auctions</h3>
+
+<table>
+    <tr>
+        <th>Auction</th>
+        <th>Highest bid</th>
+    </tr>
+    {% for auction in auctions %}
+    <tr>
+        <td>
+            <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
+        </td>
+        <td>
+            {{ auction.highest_bid }}
+        </td>
+    </tr>
+    {% endfor %}
 </table>
 
 {% endblock %}

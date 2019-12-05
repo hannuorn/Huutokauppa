@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user, current_user
 from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, SignupForm
+from application.auctions.models import Auction
 
 
 @app.route("/auth/login", methods = ["GET", "POST"])
@@ -68,4 +69,5 @@ def auth_signup():
 def auth_account():
     return render_template(
             "auth/view.html",
-            user = current_user)
+            user = current_user,
+            auctions = Auction.find_users_auctions(current_user.id))

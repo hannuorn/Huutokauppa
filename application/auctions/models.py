@@ -47,3 +47,28 @@ class Auction(Base):
             response.append({"id":row[0], "title":row[1], "highest_bid":hb})
 
         return response
+
+
+    @staticmethod
+    def find_users_auctions(account_id):
+        stmt = text(
+                "SELECT auction.id, auction.title, MAX(bid.amount)"
+                " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
+                " WHERE auction.account_id = :account_id"
+                " GROUP BY auction.id;").params(
+                        account_id = account_id)
+        res = db.engine.execute(stmt)
+
+        response = []
+        for row in res:
+            hb = 0
+            if type(row[2]) == int:
+                hb = row[2]
+
+            response.append({
+                    "id":row[0],
+                    "title":row[1],
+                    "highest_bid":hb})
+
+        return response
+        
