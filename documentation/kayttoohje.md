@@ -2,8 +2,8 @@
 
 ### Asennus
 
-Sovellus löytyy [Herokusta](hhuutokauppa.herokuapp.com). Tarkempi asennusohje
-kirjoitetaan myöhemmin.
+Sovellus löytyy [Herokusta](https://hhuutokauppa.herokuapp.com).
+Tarkempi asennusohje kirjoitetaan myöhemmin.
 
 ### Kirjautuminen ja tunnuksen luonti
 
