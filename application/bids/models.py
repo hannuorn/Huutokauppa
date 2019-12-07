@@ -27,12 +27,14 @@ class Bid(Base):
 
     @staticmethod
     def find_bids(auction_id):
-        stmt = text("SELECT bid.amount, account.name, bid.date_created"
-                    " FROM bid"
-                    " JOIN account ON bid.account_id = account.id"
-                    " WHERE (bid.auction_id = :auction_id)"
-                    " ORDER BY bid.amount DESC;").params(
-                           auction_id = auction_id)
+
+        stmt = text(
+            "SELECT bid.amount, account.name, bid.date_created"
+            " FROM bid"
+            " JOIN account ON bid.account_id = account.id"
+            " WHERE (bid.auction_id = :auction_id)"
+            " ORDER BY bid.amount DESC;"
+            ).params(auction_id = auction_id)
         res = db.engine.execute(stmt)
 
         response = []
@@ -44,28 +46,27 @@ class Bid(Base):
 
     @staticmethod
     def find_bidder(bid_id):
-        stmt = text("SELECT account.name FROM account"
-                    " JOIN bid ON bid.account_id = account.id"
-                    " WHERE (bid.id = :bid_id);").params(
-                        bid_id = bid_id)
+
+        stmt = text(
+            "SELECT account.name FROM account"
+            " JOIN bid ON bid.account_id = account.id"
+            " WHERE (bid.id = :bid_id);"
+            ).params(bid_id = bid_id)
         res = db.engine.execute(stmt)
         for row in res:
             return row[0]
 
 
-
-
-
     @staticmethod
     def highest_bid(auction_id):
 
-        stmt = text("SELECT account.name, bid.amount"
-                " FROM account JOIN bid ON bid.account_id = account.id"
-                " WHERE ((bid.auction_id = :auction_id) AND (bid.amount ="
-                " (SELECT MAX(bid.amount) FROM bid"
-                   " WHERE bid.auction_id = :auction_id)));").params(
-                        auction_id = auction_id)
-
+        stmt = text(
+            "SELECT account.name, bid.amount"
+            " FROM account JOIN bid ON bid.account_id = account.id"
+            " WHERE ((bid.auction_id = :auction_id) AND (bid.amount ="
+            " (SELECT MAX(bid.amount) FROM bid"
+            " WHERE bid.auction_id = :auction_id)));"
+            ).params(auction_id = auction_id)
         res = db.engine.execute(stmt)
 
         highest_bid = 0
@@ -81,11 +82,11 @@ class Bid(Base):
     def find_users_bids(account_id):
 
         stmt = text(
-                "SELECT auction.id, auction.title, MAX(bid.amount)"
-                " FROM auction JOIN bid ON bid.auction_id = auction.id"
-                " WHERE bid.account_id = :account_id"
-                " GROUP BY auction.id;").params(
-                        account_id = account_id)
+            "SELECT auction.id, auction.title, MAX(bid.amount)"
+            " FROM auction JOIN bid ON bid.auction_id = auction.id"
+            " WHERE bid.account_id = :account_id"
+            " GROUP BY auction.id;"
+            ).params(account_id = account_id)
         res = db.engine.execute(stmt)
 
         response = []
@@ -100,4 +101,3 @@ class Bid(Base):
                     "my_bid":hb})
 
         return response
-        

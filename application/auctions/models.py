@@ -8,7 +8,7 @@ class Auction(Base):
 
     date_ends = db.Column(
             db.DateTime,
-            default = db.func.current_timestamp())
+            nullable = False)
 
     title = db.Column(
             db.String(40),
@@ -19,7 +19,8 @@ class Auction(Base):
             nullable = False)
 
     minimum_bid = db.Column(
-            db.Integer())
+            db.Integer(),
+            nullable = False)
 
     account_id = db.Column(
             db.Integer,
@@ -32,9 +33,47 @@ class Auction(Base):
 
 
     @staticmethod
-    def find_auctions_with_highest_bid():
+    def find_auctions():
         stmt = text("SELECT auction.id, auction.title, MAX(bid.amount)"
                     " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
+                    " GROUP BY auction.id;")
+        res = db.engine.execute(stmt)
+
+        response = []
+        for row in res:
+            hb = 0
+            if type(row[2]) == int:
+                hb = row[2]
+
+            response.append({"id":row[0], "title":row[1], "highest_bid":hb})
+
+        return response
+
+
+    @staticmethod
+    def find_active_auctions():
+        stmt = text("SELECT auction.id, auction.title, MAX(bid.amount)"
+                    " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
+                    " WHERE auction.date_ends >= CURRENT_TIMESTAMP"
+                    " GROUP BY auction.id;")
+        res = db.engine.execute(stmt)
+
+        response = []
+        for row in res:
+            hb = 0
+            if type(row[2]) == int:
+                hb = row[2]
+
+            response.append({"id":row[0], "title":row[1], "highest_bid":hb})
+
+        return response
+
+
+    @staticmethod
+    def find_ended_auctions():
+        stmt = text("SELECT auction.id, auction.title, MAX(bid.amount)"
+                    " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
+                    " WHERE auction.date_ends < CURRENT_TIMESTAMP"
                     " GROUP BY auction.id;")
         res = db.engine.execute(stmt)
 

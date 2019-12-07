@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, validators
+from wtforms import StringField, IntegerField, DateTimeField, validators
+
 
 class AuctionForm(FlaskForm):
 
@@ -13,14 +14,19 @@ class AuctionForm(FlaskForm):
     description = StringField("Description",
             [validators.Length(
                     min = 5,
-                    max = 200)
+                    max = 200),
+             validators.DataRequired()
             ])
 
     minimum_bid = IntegerField("Minimum bid",
             [validators.NumberRange(
                     min = 1,
-                    max = 1000)
+                    max = 1000),
+             validators.DataRequired()
             ])
+
+    date_ends = DateTimeField("Ends",
+            [validators.InputRequired()])
 
     class Meta:
         csrf = False

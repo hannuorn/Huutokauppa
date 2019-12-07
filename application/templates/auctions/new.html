@@ -50,6 +50,29 @@
             </td>
         </tr>
         <tr>
+            <td>
+                {{ form.date_ends.label }}
+            </td>
+            <td>
+                {{ form.date_ends }}
+            </td>
+            <td>
+                <ul>
+                    {% for error in form.date_ends.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Time now is:
+            </td>
+            <td>
+                {{ time_now }}
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 <input type="submit" value="Add a new auction"/>
             </td>

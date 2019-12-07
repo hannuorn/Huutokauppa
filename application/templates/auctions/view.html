@@ -34,6 +34,20 @@
     </tr>
     <tr>
         <td>
+            Ends
+        </td>
+        <td>
+            {{ auction.date_ends }} - <i>
+                {% if ended == 1 %}
+                    ended
+                {% else %}
+                    {{ days_to_go }} days remaining
+                {% endif %}
+            </i>
+        </td>
+    </tr>
+    <tr>
+        <td>
             Seller
         </td>
         <td>

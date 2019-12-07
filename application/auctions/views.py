@@ -1,6 +1,7 @@
 from application import app, db, login_required
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
+import datetime
 
 from application.auctions.models import Auction
 from application.auctions.forms import AuctionForm
@@ -16,8 +17,12 @@ def rootpage():
 @app.route("/auctions", methods=["GET"])
 def auctions_index():
     return render_template("auctions/list.html",
-            auctions = Auction.find_auctions_with_highest_bid())
+            auctions = Auction.find_active_auctions())
 
+@app.route("/auctions_ended", methods=["GET"])
+def auctions_ended_index():
+    return render_template("auctions/list.html",
+            auctions = Auction.find_ended_auctions())
 
 @app.route("/auctions/", methods=["GET"])
 def auctions_index_slash():
@@ -34,6 +39,11 @@ def auctions_view(auction_id):
     seller = User.get_name(a.account_id)
     bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
+    ended = 0
+    if a.date_ends < datetime.datetime.now():
+        ended = 1
+
+    time_to_go = a.date_ends - datetime.datetime.now()
 
     if request.method == "GET":
         return render_template(html_file, 
@@ -41,6 +51,8 @@ def auctions_view(auction_id):
             seller = seller,
             bids = bids,
             highest_bid = highest_bid,
+            ended = ended,
+            days_to_go = time_to_go.days,
             auction = a)
 
     form = BiddingForm(request.form)
@@ -102,7 +114,10 @@ def auctions_view(auction_id):
 @app.route("/auctions/new/")
 @login_required(role = "ANY")
 def auctions_form():
-    return render_template("auctions/new.html", form = AuctionForm())
+    return render_template(
+        "auctions/new.html",
+        form = AuctionForm(),
+        time_now = datetime.datetime.now())
 
 
 @app.route("/auctions/", methods=["POST"])
@@ -111,12 +126,16 @@ def auctions_create():
     form = AuctionForm(request.form)
 
     if not form.validate():
-        return render_template("auctions/new.html", form = form)
+        return render_template(
+            "auctions/new.html",
+            form = form,
+            time_now = datetime.datetime.now())
 
     a = Auction(form.title.data)
+    a.account_id = current_user.id
     a.description = form.description.data
     a.minimum_bid = form.minimum_bid.data
-    a.account_id = current_user.id
+    a.date_ends = form.date_ends.data
 
     db.session().add(a)
     db.session().commit()
