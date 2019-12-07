@@ -62,6 +62,8 @@ def auctions_view(auction_id):
             seller = seller,
             bids = bids,
             highest_bid = highest_bid,
+            ended = ended,
+            days_to_go = time_to_go.days,
             auction = a)
 
     if current_user.id == a.account_id:
@@ -71,6 +73,8 @@ def auctions_view(auction_id):
                 seller = seller,
                 bids = bids,
                 highest_bid = highest_bid,
+                ended = ended,
+                days_to_go = time_to_go.days,
                 auction = a,
                 biderror = biderror)
 
@@ -81,6 +85,8 @@ def auctions_view(auction_id):
                 seller = seller,
                 bids = bids,
                 highest_bid = highest_bid,
+                ended = ended,
+                days_to_go = time_to_go.days,
                 auction = a,
                 biderror = biderror)
 
@@ -92,6 +98,8 @@ def auctions_view(auction_id):
                 seller = seller,
                 bids = bids,
                 highest_bid = highest_bid,
+                ended = ended,
+                days_to_go = time_to_go.days,
                 auction = a,
                 biderror = biderror)
 
@@ -108,6 +116,8 @@ def auctions_view(auction_id):
             seller = seller,
             bids = bids,
             highest_bid = highest_bid,
+            ended = ended,
+            days_to_go = time_to_go.days,
             auction = a)
 
 
