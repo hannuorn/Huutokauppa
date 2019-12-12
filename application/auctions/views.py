@@ -1,6 +1,7 @@
 from application import app, db, login_required
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user
+
 import datetime
 
 from application.auctions.models import Auction
@@ -126,8 +127,7 @@ def auctions_view(auction_id):
 def auctions_form():
     return render_template(
         "auctions/new.html",
-        form = AuctionForm(),
-        time_now = datetime.datetime.now())
+        form = AuctionForm())
 
 
 @app.route("/auctions/", methods=["POST"])
@@ -138,14 +138,21 @@ def auctions_create():
     if not form.validate():
         return render_template(
             "auctions/new.html",
-            form = form,
-            time_now = datetime.datetime.now())
+            form = form)
 
     a = Auction(form.title.data)
     a.account_id = current_user.id
     a.description = form.description.data
     a.minimum_bid = form.minimum_bid.data
-    a.date_ends = form.date_ends.data
+    ends = form.date_ends.data
+    a.date_ends = datetime.datetime(
+        ends.year, ends.month, ends.day, 23, 59, 00, 00)
+
+    if a.date_ends < datetime.datetime.now():
+        form.date_ends.errors = ["End date must be in the future."]
+        return render_template(
+            "auctions/new.html",
+            form = form)
 
     db.session().add(a)
     db.session().commit()

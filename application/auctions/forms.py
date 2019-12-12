@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DateTimeField, validators
+from wtforms.fields.html5 import DateField
 
 
 class AuctionForm(FlaskForm):
@@ -25,8 +26,8 @@ class AuctionForm(FlaskForm):
              validators.DataRequired()
             ])
 
-    date_ends = DateTimeField("Ends",
-            [validators.InputRequired()])
+    date_ends = DateField("Ends", format = "%Y-%m-%d")
+
 
     class Meta:
         csrf = False
