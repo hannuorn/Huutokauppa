@@ -158,3 +158,14 @@ def auctions_create():
     db.session().commit()
 
     return redirect(url_for("auctions_index"))
+
+
+@app.route("/auctions/delete/<auction_id>/", methods=["POST"])
+@login_required(role = "ANY")
+def auctions_delete(auction_id):
+
+    a = Auction.query.get(auction_id)
+    db.session().delete(a)
+    db.session().commit()
+
+    return redirect(url_for("auth_account"))

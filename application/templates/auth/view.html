@@ -44,10 +44,17 @@
     {% for auction in auctions %}
     <tr>
         <td>
-            <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
+            <a href="{{ url_for('auctions_view', auction_id = auction.id) }}">
+                {{ auction.title }}
+            </a>
         </td>
         <td>
             {{ auction.highest_bid }}
+        </td>
+        <td>
+            <form method="POST" action="{{ url_for('auctions_delete', auction_id = auction.id) }}">
+                <input type="submit" value="Delete auction">
+            </form>
         </td>
     </tr>
     {% endfor %}
@@ -65,7 +72,9 @@
     {% for auction in bids %}
     <tr>
         <td>
-            <a href="{{ url_for('auctions_index') }}/{{ auction.id }}">{{ auction.title }}</a>
+            <a href="{{ url_for('auctions_view', auction_id = auction.id) }}">
+                {{ auction.title }}
+            </a>
         </td>
         <td>
             {{ auction.my_bid }}
