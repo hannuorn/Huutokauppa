@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+  
+{% block body %}
+
+<h3>
+    Edit auction
+</h3>
+
+<form method="POST" action="{{ url_for('auctions_edit', auction_id = auction.id) }}">
+<table>
+    <tr>
+        <td>
+            {{ form.title.label }}
+        </td>
+        <td>
+            {{ form.title }}
+        </td>
+        <td>
+            <ul>
+                {% for error in form.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ form.description.label }}            
+        </td>
+        <td>
+            {{ form.description }}
+        </td>
+        <td>
+            <ul>
+                {% for error in form.description.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ form.minimum_bid.label }}
+        </td>
+        <td>
+            {{ form.minimum_bid }}
+        </td>
+        <td>
+            <ul>
+                {% for error in form.minimum_bid.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <input type="submit" value="Save changes">
+    </tr>
+</table>
+</form>
+{% endblock %}

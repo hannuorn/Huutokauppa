@@ -42,3 +42,29 @@ class BiddingForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+
+class AuctionEditForm(FlaskForm):
+    title = StringField("Title", 
+            [validators.Length(
+                    min = 5,
+                    max = 50),
+             validators.DataRequired()
+            ])
+
+    description = StringField("Description",
+            [validators.Length(
+                    min = 5,
+                    max = 200),
+             validators.DataRequired()
+            ])
+
+    minimum_bid = IntegerField("Minimum bid",
+            [validators.NumberRange(
+                    min = 1,
+                    max = 1000),
+             validators.DataRequired()
+            ])
+            
+    class Meta:
+        csrf = False

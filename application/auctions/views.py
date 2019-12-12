@@ -7,6 +7,7 @@ import datetime
 from application.auctions.models import Auction
 from application.auctions.forms import AuctionForm
 from application.auctions.forms import BiddingForm
+from application.auctions.forms import AuctionEditForm
 from application.bids.models import Bid
 from application.auth.models import User
 
@@ -57,43 +58,22 @@ def auctions_view(auction_id):
             auction = a)
 
     form = BiddingForm(request.form)
+    invalid = False
+    biderror = ""
+
     if not form.validate():
-        return render_template(html_file, 
-            form = form,
-            seller = seller,
-            bids = bids,
-            highest_bid = highest_bid,
-            ended = ended,
-            days_to_go = time_to_go.days,
-            auction = a)
-
-    if current_user.id == a.account_id:
+        invalid = True
+    elif current_user.id == a.account_id:
+        invalid = True
         biderror = "You can not bid in your own auction."
-        return render_template(html_file, 
-                form = form,
-                seller = seller,
-                bids = bids,
-                highest_bid = highest_bid,
-                ended = ended,
-                days_to_go = time_to_go.days,
-                auction = a,
-                biderror = biderror)
-
-    if a.minimum_bid > form.amount.data:
+    elif a.minimum_bid > form.amount.data:
+        invalid = True
         biderror = "You must bid at least the minimum bid."
-        return render_template(html_file, 
-                form = form,
-                seller = seller,
-                bids = bids,
-                highest_bid = highest_bid,
-                ended = ended,
-                days_to_go = time_to_go.days,
-                auction = a,
-                biderror = biderror)
-
-
-    if highest_bid.get("amount") >= form.amount.data:
+    elif highest_bid.get("amount") >= form.amount.data:
+        invalid = True
         biderror = "You must bid more than the current highest bid."
+
+    if invalid:
         return render_template(html_file, 
                 form = form,
                 seller = seller,
@@ -112,22 +92,16 @@ def auctions_view(auction_id):
     bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
 
-    return render_template(html_file, 
-            form = form,
-            seller = seller,
-            bids = bids,
-            highest_bid = highest_bid,
-            ended = ended,
-            days_to_go = time_to_go.days,
-            auction = a)
+    return redirect(url_for("auctions_view", auction_id = auction_id))
 
 
 @app.route("/auctions/new/")
 @login_required(role = "ANY")
 def auctions_form():
+    form = AuctionForm()
     return render_template(
         "auctions/new.html",
-        form = AuctionForm())
+        form = form)
 
 
 @app.route("/auctions/", methods=["POST"])
@@ -158,6 +132,47 @@ def auctions_create():
     db.session().commit()
 
     return redirect(url_for("auctions_index"))
+
+
+@app.route("/auctions/edit/<auction_id>/", methods=["GET", "POST"])
+@login_required(role = "ANY")
+def auctions_edit(auction_id):
+
+    a = Auction.query.get(auction_id)
+    if request.method == "GET":
+        form = AuctionEditForm()
+        form.title.data = a.title
+        form.description.data = a.description
+        form.minimum_bid.data = a.minimum_bid
+        return render_template(
+            "auctions/edit.html",
+            form = form,
+            auction = a)
+
+    form = AuctionEditForm(request.form)
+
+    invalid = False
+    if not form.validate():
+        invalid = True
+
+    if form.minimum_bid.data > a.minimum_bid:
+        invalid = True
+        form.minimum_bid.errors = ["Raising minimum bid is not allowed."]
+        form.minimum_bid.data = a.minimum_bid
+
+    if invalid:
+        return render_template(
+            "auctions/edit.html",
+            form = form,
+            auction = a)
+
+    a.title = form.title.data
+    a.description = form.description.data
+    a.minimum_bid = form.minimum_bid.data
+
+    db.session().commit()
+
+    return redirect(url_for("auth_account"))
 
 
 @app.route("/auctions/delete/<auction_id>/", methods=["POST"])

@@ -52,10 +52,16 @@
             {{ auction.highest_bid }}
         </td>
         <td>
+            <form method="GET" action="{{ url_for('auctions_edit', auction_id = auction.id) }}">
+                <input type="submit" value="Edit auction">
+            </form>
+        </td>
+        <td>
             <form method="POST" action="{{ url_for('auctions_delete', auction_id = auction.id) }}">
                 <input type="submit" value="Delete auction">
             </form>
         </td>
+    
     </tr>
     {% endfor %}
 </table>
