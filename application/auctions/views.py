@@ -139,6 +139,10 @@ def auctions_create():
 def auctions_edit(auction_id):
 
     a = Auction.query.get(auction_id)
+
+    if current_user.id != a.account_id:
+        return redirect(url_for("auctions_index"))
+
     if request.method == "GET":
         form = AuctionEditForm()
         form.title.data = a.title
@@ -179,9 +183,13 @@ def auctions_edit(auction_id):
 @login_required(role = "ANY")
 def auctions_delete(auction_id):
 
+    a = Auction.query.get(auction_id)
+
+    if current_user.id != a.account_id:
+        return redirect(url_for("auctions_index"))
+
     Bid.delete_bids(auction_id)
 
-    a = Auction.query.get(auction_id)
     db.session().delete(a)
     db.session().commit()
 
