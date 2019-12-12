@@ -164,6 +164,8 @@ def auctions_create():
 @login_required(role = "ANY")
 def auctions_delete(auction_id):
 
+    Bid.delete_bids(auction_id)
+
     a = Auction.query.get(auction_id)
     db.session().delete(a)
     db.session().commit()

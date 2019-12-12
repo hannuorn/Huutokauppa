@@ -101,3 +101,14 @@ class Bid(Base):
                     "my_bid":hb})
 
         return response
+
+
+    @staticmethod
+    def delete_bids(auction_id):
+
+        stmt = text(
+            "DELETE FROM bid WHERE bid.auction_id = :auction_id;"
+            ).params(auction_id = auction_id)
+        
+        res = db.engine.execute(stmt)
+        return True
