@@ -81,7 +81,8 @@
 
 <p/>
 
-<form method="POST" action="{{ url_for('auctions_index') }}/{{ auction.id }}/">
+<form method="POST" 
+      action="{{ url_for('auctions_view', auction_id = auction.id) }}">
     <table>
         <tr>
             <td>
