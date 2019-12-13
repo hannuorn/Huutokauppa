@@ -93,6 +93,7 @@
     Bidding
 </h3>
 
+{% if ended == 0 %}
 <form method="POST" 
       action="{{ url_for('auctions_view', auction_id = auction.id) }}">
     <table>
@@ -121,6 +122,7 @@
         </tr>
     </table>
 </form>
+{% endif %}
 
 <p/>
 
@@ -145,6 +147,8 @@
 <h3>
     Messages
 </h3>
+
+{% if ended == 0 %}
 <form method="POST"
       action="{{ url_for('messages_create', auction_id = auction.id) }}">
     <table>
@@ -170,6 +174,7 @@
         </tr>
     </table>
 </form>
+{% endif %}
 
 <p/>
 
