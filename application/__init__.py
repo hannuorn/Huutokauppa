@@ -69,6 +69,8 @@ from application.auth import views
 
 from application.bids import models
 
+from application.messages import models
+
 
 # login
 

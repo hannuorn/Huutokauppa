@@ -9,6 +9,7 @@ from application.auctions.forms import AuctionForm
 from application.auctions.forms import BiddingForm
 from application.auctions.forms import AuctionEditForm
 from application.bids.models import Bid
+from application.messages.models import Message
 from application.auth.models import User
 
 
@@ -31,6 +32,62 @@ def auctions_index_slash():
     return redirect(url_for("auctions_index"))
 
 
+@app.route("/auctions/create_message/<auction_id>/", methods=["POST"])
+@login_required(role = "ANY")
+def messages_create(auction_id):
+
+    html_file = "auctions/view.html"
+    a = Auction.query.get(auction_id)
+    form = BiddingForm(request.form)
+
+    invalid = False
+    if not form.message.validate(form):
+        invalid = True
+
+    seller = User.get_name(a.account_id)
+    bids = Bid.find_bids(auction_id)
+    highest_bid = Bid.highest_bid(auction_id)
+    messages = Message.get_messages(auction_id)
+    ended = 0
+    if a.date_ends < datetime.datetime.now():
+        ended = 1
+    time_to_go = a.date_ends - datetime.datetime.now()
+
+    if invalid:
+        return render_template(html_file, 
+            form = form,
+            seller = seller,
+            bids = bids,
+            highest_bid = highest_bid,
+            ended = ended,
+            days_to_go = time_to_go.days,
+            messages = messages,
+            auction = a)
+
+    m = Message(auction_id, current_user.id, form.message.data)
+    db.session().add(m)
+    db.session().commit()
+
+    return redirect(url_for("auctions_view", auction_id = auction_id))
+
+
+@app.route("/auctions/delete_message/<message_id>/", methods=["POST"])
+@login_required(role = "ANY")
+def messages_delete(message_id):
+
+    m = Message.query.get(message_id)
+
+    if current_user.id != m.account_id:
+        return redirect(url_for("auctions_index"))
+
+    auction_id = m.auction_id
+
+    db.session().delete(m)
+    db.session().commit()
+
+    return redirect(url_for("auctions_view", auction_id = auction_id))
+
+
 @app.route("/auctions/<auction_id>/", methods=["GET", "POST"])
 @login_required(role = "ANY")
 def auctions_view(auction_id):
@@ -41,6 +98,7 @@ def auctions_view(auction_id):
     seller = User.get_name(a.account_id)
     bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
+    messages = Message.get_messages(auction_id)
     ended = 0
     if a.date_ends < datetime.datetime.now():
         ended = 1
@@ -55,13 +113,14 @@ def auctions_view(auction_id):
             highest_bid = highest_bid,
             ended = ended,
             days_to_go = time_to_go.days,
+            messages = messages,
             auction = a)
 
     form = BiddingForm(request.form)
     invalid = False
     biderror = ""
 
-    if not form.validate():
+    if not form.amount.validate(form):
         invalid = True
     elif current_user.id == a.account_id:
         invalid = True
@@ -81,6 +140,7 @@ def auctions_view(auction_id):
                 highest_bid = highest_bid,
                 ended = ended,
                 days_to_go = time_to_go.days,
+                messages = messages,
                 auction = a,
                 biderror = biderror)
 

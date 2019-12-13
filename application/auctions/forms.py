@@ -40,6 +40,12 @@ class BiddingForm(FlaskForm):
                     max = 1000000)
             ])
 
+    message = StringField("Message",
+            [validators.Length(
+                    min = 5,
+                    max = 200)
+            ])
+            
     class Meta:
         csrf = False
 
