@@ -31,7 +31,10 @@ varten.
 * myytävien tavaroiden lajittelu kategorioihin
 * korotusautomaatti
 
-### Sovelluksessa olevia vikoja tai puutteita
+### Sovelluksessa olevia vikoja ja puutteita
 
 * Listauksia ei sivuteta, joten tietokannan suurentuessa on odotettavissa ongelmia.
 * Sovelluksen ulkoasu ja käyttöliittymä kaipaisi parannusta.
+* Käyttäjän pitäisi selkeämmin saada tieto siitä, että hän on voittanut huutokaupan tai että hänen oma huutokauppansa on päättynyt.
+* Käyttäjärooleja ei ole toteutettu. Käyttäjätunnuksia ei voi poistaa.
+* Viestipalstan viestejä ei voi muokata.
