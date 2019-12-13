@@ -61,7 +61,7 @@ class Bid(Base):
     def highest_bid(auction_id):
 
         stmt = text(
-            "SELECT account.name, bid.amount"
+            "SELECT account.name, bid.amount, account.email, account.id"
             " FROM account JOIN bid ON bid.account_id = account.id"
             " WHERE ((bid.auction_id = :auction_id) AND (bid.amount ="
             " (SELECT MAX(bid.amount) FROM bid"
@@ -71,11 +71,14 @@ class Bid(Base):
 
         highest_bid = 0
         highest_bidder = ""
+        email = ""
         for row in res:
             highest_bidder = row[0]
             highest_bid = row[1]
+            email = row[2]
+            id = row[3]
 
-        return {"amount":highest_bid, "bidder":highest_bidder}
+        return {"amount":highest_bid, "bidder":highest_bidder, "email":email, "id":id}
 
 
     @staticmethod

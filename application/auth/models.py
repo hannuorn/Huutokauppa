@@ -12,6 +12,10 @@ class User(Base):
             db.String(144),
             nullable = False)
 
+    email = db.Column(
+            db.String(144),
+            nullable = False)
+    
     username = db.Column(
             db.String(144),
             nullable = False,
@@ -21,11 +25,13 @@ class User(Base):
             db.String(144),
             nullable = False)
 
+
     auctions = db.relationship("Auction", backref = 'account', lazy = True)
 
 
-    def __init__(self, name, username, password):
+    def __init__(self, name, email, username, password):
         self.name = name
+        self.email = email
         self.username = username
         self.password = password
 

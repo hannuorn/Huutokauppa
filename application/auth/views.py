@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user
 
 from application import app, db, login_required
 from application.auth.models import User
-from application.auth.forms import LoginForm, SignupForm
+from application.auth.forms import LoginForm, SignupForm, AccountEditForm
 from application.auctions.models import Auction
 from application.bids.models import Bid
 
@@ -54,8 +54,9 @@ def auth_signup():
         return render_template("auth/signupform.html", form = form,
                                error = "Passwords do not match")
 
-    u = User(form.fullname.data, form.username.data, form.password.data)
-    u.password = form.password.data
+    u = User(
+        form.name.data, form.email.data,
+        form.username.data, form.password.data)
 
     db.session().add(u)
     db.session().commit()
@@ -69,8 +70,49 @@ def auth_signup():
 @app.route("/auth/account", methods = ["GET"])
 @login_required(role = "ANY")
 def auth_account():
-    return render_template(
+    if request.method == "GET":
+        return render_template(
             "auth/view.html",
+            edit_mode = 0,
             user = current_user,
             auctions = Auction.find_users_auctions(current_user.id),
             bids = Bid.find_users_bids(current_user.id))
+
+
+
+@app.route("/auth/account/edit_name", methods = ["GET", "POST"])
+@login_required(role = "ANY")
+def auth_edit():
+    if request.method == "GET":
+        form = AccountEditForm()
+        form.name.data = current_user.name
+        form.email.data = current_user.email
+        return render_template(
+            "auth/view.html",
+            form = form,
+            edit_mode = 1,
+            user = current_user,
+            auctions = Auction.find_users_auctions(current_user.id),
+            bids = Bid.find_users_bids(current_user.id))
+
+    form = AccountEditForm(request.form)
+
+    invalid = False
+    if not form.validate():
+        invalid = True
+
+    if invalid:
+        return render_template(
+            "auth/view.html",
+            form = form,
+            edit_mode = 1,
+            user = current_user,
+            auctions = Auction.find_users_auctions(current_user.id),
+            bids = Bid.find_users_bids(current_user.id))
+
+    u = User.query.get(current_user.id)
+    u.name = form.name.data
+    u.email = form.email.data
+    db.session().commit()
+
+    return redirect(url_for("auth_account"))

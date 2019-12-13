@@ -44,7 +44,7 @@ def messages_create(auction_id):
     if not form.message.validate(form):
         invalid = True
 
-    seller = User.get_name(a.account_id)
+    seller = User.query.get(a.account_id)
     bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
     messages = Message.get_messages(auction_id)
@@ -95,7 +95,7 @@ def auctions_view(auction_id):
     html_file = "auctions/view.html"
 
     a = Auction.query.get(auction_id)
-    seller = User.get_name(a.account_id)
+    seller = User.query.get(a.account_id)
     bids = Bid.find_bids(auction_id)
     highest_bid = Bid.highest_bid(auction_id)
     messages = Message.get_messages(auction_id)

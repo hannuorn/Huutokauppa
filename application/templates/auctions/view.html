@@ -50,7 +50,11 @@
             Seller
         </td>
         <td>
-            {{ seller }}
+            {% if ended == 1 and current_user.id == highest_bid.id %}
+                {{ seller.name }}, <b>{{ seller.email }}</b>
+            {% else %}
+                {{ seller.name }}
+            {% endif %}
         </td>
     </tr>
     <tr>
@@ -72,7 +76,11 @@
             {% if highest_bid.amount == 0 %}
             no bids
             {% else %}
-            <b>{{ highest_bid.amount }}</b> by <i>{{ highest_bid.bidder }}</i>
+                {% if ended == 1 and current_user.id == seller.id %}
+                    <b>{{ highest_bid.amount }}</b> by <i>{{ highest_bid.bidder }}</i>, <b>{{ highest_bid.email }}</b>
+                {% else %}
+                    <b>{{ highest_bid.amount }}</b> by <i>{{ highest_bid.bidder }}</i>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
