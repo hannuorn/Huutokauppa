@@ -72,6 +72,7 @@ class Bid(Base):
         highest_bid = 0
         highest_bidder = ""
         email = ""
+        id = 0
         for row in res:
             highest_bidder = row[0]
             highest_bid = row[1]
