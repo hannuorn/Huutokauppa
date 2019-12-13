@@ -7,28 +7,31 @@ ostaja (korkeimman huudon tekijä) ja myyjä saavat toistensa yhteystiedot kaupa
 varten.
 
 
-### Toimintoja
+### Toteutetut toiminnot
 
 * käyttäjän luonti
 * käyttäjätietojen muokkaus
 * huutokaupan luonti
+* huutokaupan muokkaus
 * aktiivisten huutokauppojen listaus ja katselu
+* päättyneiden huutokauppojen listaus ja katselu
 * huutaminen
 * niiden huutokauppojen listaus, joissa käyttäjä on osallistunut huutamiseen, sekä onko oma huuto voittava vai häviävä tällä hetkellä
 * toteutuneiden kauppojen listaus ja yhteenvetotiedot
+* viestipalsta huutokaupan yhteydessä
 
-
-### Alustava tietokantakaavio
-
-* Kayttaja((pk) id:Integer, nimi:String, puhelin:String, sahkoposti:String)
-* Huutokauppa((pk) id:Integer, otsikko:String, kuvaus:String, (fk) myyja -> Kayttaja, lahtohinta:Integer, sulkeutumisaika:Date)
-* Huuto((fk) huutokauppa -> Huutokauppa, (fk) huutaja -> Kayttaja, maara:Integer)
+### Tietokantakaavio
 
 ![alt text](tietokantakaavio.png)
 
+(Tietokantakaaviosta puuttuu taulu message)
 
-### Mahdollisia kehittyneempiä toimintoja
+### Ideoita, joita ei ehditty toteuttaa
 
 * myytävien tavaroiden lajittelu kategorioihin
-* kysymyspalsta huutokauppojen yhteyteen
 * korotusautomaatti
+
+### Sovelluksessa olevia vikoja tai puutteita
+
+* Listauksia ei sivuteta, joten tietokannan suurentuessa on odotettavissa ongelmia.
+* Sovelluksen ulkoasu ja käyttöliittymä kaipaisi parannusta.

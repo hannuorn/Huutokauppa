@@ -4,6 +4,19 @@
 
 Sovellus löytyy [Herokusta](https://hhuutokauppa.herokuapp.com).
 
+Asennus paikallisesti:
+
+Kloonaa repositorio ja aja terminaalissa repositorion kansiossa:
+
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python3 run.py
+
+Avaa tämän jälkeen nettiselaimella osoite
+
+    http://localhost:5000
+
 
 ### Kirjautuminen ja tunnuksen luonti
 
