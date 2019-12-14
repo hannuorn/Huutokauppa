@@ -60,7 +60,8 @@ Voit kirjoittaa viestipalstalle viestin kenttään **Message** ja painamalla
 nappulaa **Post message**. Alapuolella näkyy lista kaikista viesteistä
 uusimmasta vanhimpaan. Huutokaupan myyjän kirjoittamat viestit näkyvät
 lihavoituina. Omien viestiesi kohdalla näkyy nappula **Delete**, josta
-voit poistaa kirjoittamasi viestin.
+voit poistaa kirjoittamasi viestin. Viestejä voi myös muokata nappulalla
+**Edit**.
 
 Jos huutokauppa on päättynyt, uusia huutoja tai viestejä ei voi enää luoda.
 Sulkeutuneen huutokaupan myyjä näkee ostajan sähköpostiosoiteen kohdassa
