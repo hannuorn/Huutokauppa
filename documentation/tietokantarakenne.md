@@ -2,6 +2,12 @@
 
 Tietokannassa on neljä tietokantataulua. Tietokanta on normalisoitu.
 
+
+## Tietokantakaavio
+
+![alt text](tietokantakaavio.png)
+
+
 ## CREATE TABLE -lauseet
 
 	CREATE TABLE account (

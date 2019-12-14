@@ -24,8 +24,6 @@ varten.
 
 ![alt text](tietokantakaavio.png)
 
-(Tietokantakaaviosta puuttuu taulu message)
-
 ### Ideoita, joita ei ehditty toteuttaa
 
 * myytävien tavaroiden lajittelu kategorioihin
