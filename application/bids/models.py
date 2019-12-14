@@ -32,7 +32,7 @@ class Bid(Base):
             "SELECT bid.amount, account.name, bid.date_created"
             " FROM bid"
             " JOIN account ON bid.account_id = account.id"
-            " WHERE (bid.auction_id = :auction_id)"
+            " WHERE bid.auction_id = :auction_id"
             " ORDER BY bid.amount DESC;"
             ).params(auction_id = auction_id)
         res = db.engine.execute(stmt)
@@ -50,7 +50,7 @@ class Bid(Base):
         stmt = text(
             "SELECT account.name FROM account"
             " JOIN bid ON bid.account_id = account.id"
-            " WHERE (bid.id = :bid_id);"
+            " WHERE bid.id = :bid_id;"
             ).params(bid_id = bid_id)
         res = db.engine.execute(stmt)
         for row in res:
@@ -63,9 +63,9 @@ class Bid(Base):
         stmt = text(
             "SELECT account.name, bid.amount, account.email, account.id"
             " FROM account JOIN bid ON bid.account_id = account.id"
-            " WHERE ((bid.auction_id = :auction_id) AND (bid.amount ="
+            " WHERE (bid.auction_id = :auction_id) AND (bid.amount ="
             " (SELECT MAX(bid.amount) FROM bid"
-            " WHERE bid.auction_id = :auction_id)));"
+            " WHERE bid.auction_id = :auction_id));"
             ).params(auction_id = auction_id)
         res = db.engine.execute(stmt)
 
