@@ -5,6 +5,8 @@
     <tr>
         <th>Auction</th>
         <th>Highest bid</th>
+        <th>Highest bidder</th>
+        <th>Ends</th>
     </tr>
     {% for auction in auctions %}
     <tr>
@@ -15,6 +17,12 @@
         </td>
         <td>
             {{ auction.highest_bid }}
+        </td>
+        <td>
+            {{ auction.highest_bidder }}
+        </td>
+        <td>
+            {{ auction.date_ends }}
         </td>
     </tr>
     {% endfor %}
