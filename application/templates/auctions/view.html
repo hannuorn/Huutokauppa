@@ -93,7 +93,7 @@
     Bidding
 </h3>
 
-{% if ended == 0 %}
+{% if ended == 0 and edit_mode == 0 %}
 <form method="POST" 
       action="{{ url_for('auctions_view', auction_id = auction.id) }}">
     <table>
@@ -148,7 +148,7 @@
     Messages
 </h3>
 
-{% if ended == 0 %}
+{% if ended == 0 and edit_mode == 0 %}
 <form method="POST"
       action="{{ url_for('messages_create', auction_id = auction.id) }}">
     <table>
@@ -178,35 +178,74 @@
 
 <p/>
 
+{% if edit_mode == 1 %}
+    <form method="POST" action="{{ url_for('messages_edit', message_id = edit_message_id) }}">
+{% endif %}
+
 <table>
     <tr>
         <th>Delete</th>
         <th>Edit</th>
         <th>By</th>
         <th>Message</th>
-        <th>Created</th>
-        <th>Edited</th>
+        {% if edit_mode == 0 %}
+            <th>Created</th>
+            <th>Edited</th>
+        {% endif %}
     </tr>
     {% for message in messages %}
-    <tr>
-        <td>
-            {% if current_user.id == message.author_id %}
-            <form method="POST" action="{{ url_for('messages_delete', message_id = message.id) }}">
-                <input type="submit" value="Delete"/>
-            </form>
+        <tr>
+            <td>
+                {% if edit_mode == 0 and current_user.id == message.author_id %}
+                    <form method="POST" action="{{ url_for('messages_delete', message_id = message.id) }}">
+                        <input type="submit" value="Delete"/>
+                    </form>
+                {% endif %}
+            </td>
+            <td>
+                {% if edit_mode == 1 %}
+                    {% if message.id == edit_message_id %}
+                        <input type="submit" value="Apply"/>
+                    {% endif %}
+                {% else %}
+                    {% if current_user.id == message.author_id %}
+                        <form method="GET" action="{{ url_for('messages_edit', message_id = message.id) }}">
+                            <input type="submit" value="Edit"/>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>{{ message.author }}</td>
+            {% if edit_mode == 1 and message.id == edit_message_id %}
+                <td>{{ form.message_edit }}</td>
+            {% else %}
+                {% if auction.account_id == message.author_id %}
+                    <td><b>{{ message.body }}</b></td>
+                {% else %}
+                    <td>{{ message.body }}</td>
+                {% endif %}
             {% endif %}
-        </td>
-        <td></td>
-        <td>{{ message.author }}</td>
-        {% if auction.account_id == message.author_id %}
-        <td><b>{{ message.body }}</b></td>
-        {% else %}
-        <td>{{ message.body }}</td>
-        {% endif %}
-        <td>{{ message.date_created }}</td>
-        <td>{{ message.date_modified }}</td>
-    </tr>
+
+            {% if edit_mode == 0 %}
+                <td>{{ message.date_created }}</td>
+                <td>{{ message.date_modified }}</td>
+            {% else %}
+                <td>
+                    {% if message.id == edit_message_id %}
+                    <ul>
+                        {% for error in form.message_edit.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
     {% endfor %}
 </table>
+
+{% if edit_mode == 1 %}
+    </form>
+{% endif %}
 
 {% endblock %}

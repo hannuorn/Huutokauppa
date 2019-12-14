@@ -46,6 +46,12 @@ class BiddingForm(FlaskForm):
                     max = 200)
             ])
             
+    message_edit = StringField("Message",
+            [validators.Length(
+                    min = 5,
+                    max = 200)
+            ])
+            
     class Meta:
         csrf = False
 
@@ -71,6 +77,6 @@ class AuctionEditForm(FlaskForm):
                     max = 1000),
              validators.DataRequired()
             ])
-            
+
     class Meta:
         csrf = False

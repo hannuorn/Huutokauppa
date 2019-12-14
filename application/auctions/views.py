@@ -56,6 +56,7 @@ def messages_create(auction_id):
     if invalid:
         return render_template(html_file, 
             form = form,
+            edit_mode = 0,
             seller = seller,
             bids = bids,
             highest_bid = highest_bid,
@@ -88,6 +89,63 @@ def messages_delete(message_id):
     return redirect(url_for("auctions_view", auction_id = auction_id))
 
 
+def render_messages_edit(message_id, form):
+
+    m = Message.query.get(message_id)
+    auction_id = m.auction_id
+    html_file = "auctions/view.html"
+    a = Auction.query.get(auction_id)
+    seller = User.query.get(a.account_id)
+    bids = Bid.find_bids(auction_id)
+    highest_bid = Bid.highest_bid(auction_id)
+    messages = Message.get_messages(auction_id)
+    ended = 0
+    if a.date_ends < datetime.datetime.now():
+        ended = 1
+    time_to_go = a.date_ends - datetime.datetime.now()
+
+    return render_template(html_file,
+        form = form,
+        edit_mode = 1,
+        edit_message_id = m.id,
+        seller = seller,
+        bids = bids,
+        highest_bid = highest_bid,
+        ended = ended,
+        days_to_go = time_to_go.days,
+        messages = messages,
+        auction = a)
+
+
+@app.route("/auctions/edit_message/<message_id>/", methods=["GET", "POST"])
+@login_required(role = "ANY")
+def messages_edit(message_id):
+
+    m = Message.query.get(message_id)
+
+    if current_user.id != m.account_id:
+        return redirect(url_for("auctions_index"))
+
+    if request.method == "GET":
+        form = BiddingForm()
+        form.message_edit.data = m.body
+
+        return render_messages_edit(message_id, form)
+
+    form = BiddingForm(request.form)
+    invalid = False
+    if not form.message_edit.validate(form):
+        invalid = True
+
+    if invalid:
+        return render_messages_edit(message_id, form)
+
+    m.body = form.message_edit.data
+    db.session().commit()
+
+    return redirect(url_for('auctions_view', auction_id = m.auction_id))
+
+
 @app.route("/auctions/<auction_id>/", methods=["GET", "POST"])
 @login_required(role = "ANY")
 def auctions_view(auction_id):
@@ -108,6 +166,8 @@ def auctions_view(auction_id):
     if request.method == "GET":
         return render_template(html_file, 
             form = BiddingForm(),
+            edit_mode = 0,
+            edit_message_id = 0,
             seller = seller,
             bids = bids,
             highest_bid = highest_bid,
@@ -135,6 +195,8 @@ def auctions_view(auction_id):
     if invalid:
         return render_template(html_file, 
                 form = form,
+                edit_mode = 0,
+                edit_message_id = 0,
                 seller = seller,
                 bids = bids,
                 highest_bid = highest_bid,
