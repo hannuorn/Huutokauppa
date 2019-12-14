@@ -28,7 +28,7 @@
             Created
         </td>
         <td>
-            {{ auction.date_created }}
+            {{ auction.date_created.strftime('%Y-%m-%d %H:%M') }}
         </td>
     </tr>
     <tr>
@@ -36,7 +36,7 @@
             Ends
         </td>
         <td>
-            {{ auction.date_ends }} - <i>
+            {{ auction.date_ends.strftime('%Y-%m-%d %H:%M') }} - <i>
                 {% if ended == 1 %}
                     ended
                 {% else %}
