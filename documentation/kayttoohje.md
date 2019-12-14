@@ -24,6 +24,12 @@ Klikkaa **Login** etusivun oikeassa yläkulmassa.
 Syötä tunnus ja salasana, tai klikkaa **Sign up** luodaksesi uuden tunnuksen.
 
 
+### Huutokaupan luonti
+
+Valitse yläpalkista **Create an auction**. Syötä otsikko (**Title**) ja tarkempi kuvaus (**Description**).
+Määrittele lähtöhinta kenttään **Minimum bid**. Valitse huutokaupan päättymispäivä.
+Huutokaupat päättyvät aina klo 23.59 määriteltynä päättymispäivänä.
+
 ### Huutokauppojen listaus
 
 Lista huutokaupoista tulostuu heti kirjautumisen jälkeen.
@@ -41,6 +47,10 @@ Huutokaupan sivulla on kolme osaa:
 
 Huutokaupan tiedoissa huomionarvoisia kohtia ovat **Minimum bid** eli
 lähtöhinta ja **Winning bid** eli tämänhetkinen korkein huuto ja huutaja.
+
+Kohdassa **Ends** näkyy, milloin huutokauppa päättyy, ja montako päivää
+päättymiseen on vielä jäljellä. Jos huutokauppa on jo päättynyt, rivillä
+lukee **ended**.
 
 Voit huutaa syöttämällä luvun kenttään **Bid amount** ja klikkaamalla
 nappulaa **Place bid**. Huutosi tulee olla vähintään lähtöhinnan suuruinen
