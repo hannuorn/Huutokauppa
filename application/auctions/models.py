@@ -54,7 +54,7 @@ class Auction(Base):
 
     @staticmethod
     def find_active_auctions():
-        stmt = text("SELECT auction.id, auction.title, bid.amount, account.name, auction.date_ends"
+        stmt = text("SELECT auction.id, auction.title, bid.amount, account.name, DATE(auction.date_ends)"
                     " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
                     " LEFT JOIN account ON account.id = bid.account_id"
                     " WHERE (auction.date_ends > CURRENT_TIMESTAMP) AND"
@@ -68,7 +68,7 @@ class Auction(Base):
 
     @staticmethod
     def find_ended_auctions():
-        stmt = text("SELECT auction.id, auction.title, bid.amount, account.name, auction.date_ends"
+        stmt = text("SELECT auction.id, auction.title, bid.amount, account.name, DATE(auction.date_ends)"
                     " FROM auction LEFT JOIN bid ON bid.auction_id = auction.id"
                     " LEFT JOIN account ON account.id = bid.account_id"
                     " WHERE (auction.date_ends < CURRENT_TIMESTAMP) AND"
